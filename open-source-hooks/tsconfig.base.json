@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "types": [ "node" ],
+    "typeRoots": ["@types", "./node_modules/@types"],
+    "module": "CommonJS",
+    "target": "ESNext",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "baseUrl": "./",
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,13 @@
+# node modules
+node_modules
+
+# IDE - VSCode
+.vscode
+
+# build
+open-source-hooks/lib
+open-source-hooks/types
+example/dist
+
+# yarn
+yarn-error.log
