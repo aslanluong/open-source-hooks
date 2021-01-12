@@ -1,27 +1,25 @@
 import { useState, useCallback, Dispatch, SetStateAction } from 'react';
-import { LocalStorageReturn } from './types';
+import { LocalStorageReturn, ParserOptions } from './types';
 
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
+  options?: ParserOptions<T>,
 ): LocalStorageReturn<T> {
   if (!key) {
     throw new Error('useLocalStorage key may not be falsy');
   }
 
+  const deserializer = options ? options.deserializer : JSON.parse;
+  const serializer = options ? options.serializer : JSON.stringify;
+
   const [state, setState] = useState<T | undefined>(() => {
     try {
       const localStorageValue = localStorage.getItem(key);
       if (localStorageValue !== null) {
-        return JSON.parse(localStorageValue);
+        return deserializer(localStorageValue);
       } else {
-        initialValue &&
-          localStorage.setItem(
-            key,
-            typeof initialValue === 'string'
-              ? initialValue
-              : JSON.stringify(initialValue),
-          );
+        initialValue && localStorage.setItem(key, serializer(initialValue));
         return initialValue;
       }
     } catch {
@@ -39,13 +37,10 @@ export function useLocalStorage<T>(
             ? (valOrFunc as (state: T) => T)(state)
             : valOrFunc;
         if (typeof newState === 'undefined') return;
-        let value: string;
+        const value: string = serializer(newState);
 
-        if (typeof newState === 'string') value = newState;
-        else value = JSON.stringify(newState);
-        console.log(value);
         localStorage.setItem(key, value);
-        setState(JSON.parse(value));
+        setState(deserializer(value));
       } catch {
         // If user is in private mode or has storage restriction
         // localStorage can throw.
