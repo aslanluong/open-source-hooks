@@ -6,3 +6,9 @@ export { useDebounce } from './use-debounce';
 export { useLocalStorage } from './use-local-storage';
 // v1.3.0
 export { useWindowSize } from './use-window-size';
+// v1.4.0
+export {
+  useBreakpoints,
+  useCustomBreakpoints,
+  setDefaultBreakpoints,
+} from './use-break-point';
