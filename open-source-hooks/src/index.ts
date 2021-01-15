@@ -11,6 +11,6 @@ export {
   useBreakpoints,
   useCustomBreakpoints,
   setDefaultBreakpoints,
-} from './use-break-point';
+} from './use-break-points';
 // v1.5.0
 export { useMethods } from './use-methods';
