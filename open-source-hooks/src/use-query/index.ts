@@ -1,26 +1,6 @@
-import { Reducer, useEffect, useReducer, useState } from 'react';
-import {
-  AlphaFetchResult,
-  AlphaFetchState,
-  Endpoint,
-  ObserverConfigs,
-} from './types';
-
-interface AlphaFetchPayloads<TData, TError> {
-  ['FETCH_INIT']: undefined;
-  ['FETCH_SUCCESS']: { data: TData };
-  ['FETCH_FAILURE']: { error: TError };
-}
-
-type AlphaFetchActionsMap<Payloads> = {
-  [Key in keyof Payloads]: Payloads[Key] extends undefined
-    ? { type: Key }
-    : { type: Key; payload: Payloads[Key] };
-};
-
-type AlphaFetchAction<TData, TError> = AlphaFetchActionsMap<
-  AlphaFetchPayloads<TData, TError>
->[keyof AlphaFetchActionsMap<AlphaFetchPayloads<TData, TError>>];
+import { useEffect, useState } from 'react';
+import { useMethods } from '../use-methods';
+import { FetchResult, FetchState, Endpoint, ObserverConfigs } from './types';
 
 export function parseFetchArgs<TConfigs extends ObserverConfigs<any, any, any>>(
   arg1: Endpoint | TConfigs,
@@ -39,15 +19,15 @@ export function parseFetchArgs<TConfigs extends ObserverConfigs<any, any, any>>(
 
 export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   configs: ObserverConfigs<TResponse, TData, TError>,
-): AlphaFetchResult<TData, TError>;
+): FetchResult<TData, TError>;
 export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   endpoint: Endpoint,
   configs?: ObserverConfigs<TResponse, TData, TError>,
-): AlphaFetchResult<TData, TError>;
+): FetchResult<TData, TError>;
 export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   arg1: Endpoint | ObserverConfigs<TResponse, TData, TError>,
   arg2?: ObserverConfigs<TResponse, TData, TError>,
-): AlphaFetchResult<TData, TError> {
+): FetchResult<TData, TError> {
   const parsedConfigs = parseFetchArgs(arg1, arg2);
   const {
     endpoint,
@@ -58,14 +38,46 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   } = parsedConfigs;
   const stringifyDeps = JSON.stringify(pagination) + JSON.stringify(depParams);
 
-  const [fetchState, fetchDispatch] = useReducer<
-    Reducer<AlphaFetchState<TData, TError>, AlphaFetchAction<TData, TError>>
-  >(fetchReducer, {
+  const fetchInitialState: FetchState<TData, TError> = {
     status: 'idle',
     isLoading: false,
     data: parsedConfigs.initialData || null,
     error: null,
-  });
+  };
+
+  const createFetchMethods = (state: typeof fetchInitialState) => {
+    return {
+      handleFetchInit(): typeof fetchInitialState {
+        return { ...state, status: 'loading', isLoading: true };
+      },
+      handleFetchSuccess(
+        data: typeof fetchInitialState['data'],
+      ): typeof fetchInitialState {
+        return {
+          ...state,
+          status: 'success',
+          isLoading: false,
+          error: null,
+          data,
+        };
+      },
+      handleFetchFailure(
+        error: typeof fetchInitialState['error'],
+      ): typeof fetchInitialState {
+        return {
+          ...state,
+          status: 'error',
+          isLoading: false,
+          error,
+        };
+      },
+    };
+  };
+
+  const [fetchState, fetchMethods] = useMethods<
+    ReturnType<typeof createFetchMethods>,
+    typeof fetchInitialState
+  >(createFetchMethods, fetchInitialState);
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const reload = () => setReloadCount(reloadCount + 1);
@@ -88,7 +100,7 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
         stringParams += `&offset=${offset}&limit=${pagination.pageSize || 10}`;
       }
 
-      fetchDispatch({ type: 'FETCH_INIT' });
+      fetchMethods.handleFetchInit();
       parsedConfigs.onFetching && parsedConfigs.onFetching();
 
       fetch(endpoint + stringParams, {
@@ -100,12 +112,9 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
           parsedConfigs.onSuccess && parsedConfigs.onSuccess(data);
           // handle process data
           if (parsedConfigs.processData) {
-            fetchDispatch({
-              type: 'FETCH_SUCCESS',
-              payload: { data: processData(data) },
-            });
+            fetchMethods.handleFetchSuccess(processData(data));
           } else {
-            fetchDispatch({ type: 'FETCH_SUCCESS', payload: { data } });
+            fetchMethods.handleFetchSuccess(data);
           }
         })
         .catch((error) => {
@@ -113,7 +122,7 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
             console.log('User aborted the fetch!');
           } else {
             parsedConfigs.onError && parsedConfigs.onError(error);
-            fetchDispatch({ type: 'FETCH_FAILURE', payload: { error } });
+            fetchMethods.handleFetchFailure(error);
           }
         });
     }
@@ -138,31 +147,4 @@ const isEndpoint = (value: any): value is Endpoint => {
 
 const isEndpointArray = (value: any): value is Endpoint => {
   return Array.isArray(value);
-};
-
-const fetchReducer = <TData, TError>(
-  state: AlphaFetchState<TData, TError>,
-  action: AlphaFetchAction<TData, TError>,
-): AlphaFetchState<TData, TError> => {
-  switch (action.type) {
-    case 'FETCH_INIT':
-      return { ...state, status: 'loading', isLoading: true };
-    case 'FETCH_SUCCESS':
-      return {
-        ...state,
-        status: 'success',
-        isLoading: false,
-        error: null,
-        data: action.payload.data,
-      };
-    case 'FETCH_FAILURE':
-      return {
-        ...state,
-        status: 'error',
-        isLoading: false,
-        error: action.payload.error,
-      };
-    default:
-      return state;
-  }
 };

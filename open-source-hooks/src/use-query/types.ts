@@ -1,7 +1,7 @@
-export type AlphaFetchStatus = 'idle' | 'loading' | 'success' | 'error';
+export type FetchStatus = 'idle' | 'loading' | 'success' | 'error';
 
-export interface AlphaFetchResult<TData, TError> {
-  status: AlphaFetchStatus;
+export interface FetchResult<TData, TError> {
+  status: FetchStatus;
   isLoading: boolean;
   data: null | TData;
   error: null | TError;
@@ -54,8 +54,8 @@ export interface ObserverConfigs<TResponse, TData = TResponse, TError = unknown>
   processData?: (response: TResponse) => TData;
 }
 
-export interface AlphaFetchState<TData, TError> {
-  status: AlphaFetchStatus;
+export interface FetchState<TData, TError> {
+  status: FetchStatus;
   isLoading: boolean;
   data: null | TData;
   error: null | TError;

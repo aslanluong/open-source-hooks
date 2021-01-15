@@ -6,10 +6,16 @@ import {
   useWindowSize,
   useBreakpoints,
   useMethods,
+  useQuery,
 } from "./dist/index";
 
 const App: FC = () => {
   const message = useHelloWorld();
+  useQuery("https://api.github.com/users/octocat", {
+    onSuccess: (res) => {
+      console.log(res);
+    },
+  });
 
   const [value, setValue, removeValue] = useLocalStorage(
     "value",
