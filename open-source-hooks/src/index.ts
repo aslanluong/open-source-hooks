@@ -14,3 +14,5 @@ export {
 } from './use-break-points';
 // v1.5.0
 export { useMethods } from './use-methods';
+// v1.7.0
+export { useToggle } from './use-toggle';
