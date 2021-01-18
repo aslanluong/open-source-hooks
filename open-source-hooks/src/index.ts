@@ -16,3 +16,5 @@ export {
 export { useMethods } from './use-methods';
 // v1.7.0
 export { useToggle } from './use-toggle';
+// v1.8.0
+export { useThrottle } from './use-throttle';

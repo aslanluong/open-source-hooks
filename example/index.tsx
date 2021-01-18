@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import ReactDOM from "react-dom";
 import {
   useHelloWorld,
@@ -7,6 +7,8 @@ import {
   useBreakpoints,
   useMethods,
   useQuery,
+  useToggle,
+  useThrottle,
 } from "./dist/index";
 
 const App: FC = () => {
@@ -52,6 +54,11 @@ const App: FC = () => {
     typeof initialState
   >(createMethods, initialState);
 
+  const [toggle, setToggle] = useToggle(false);
+
+  const [throttle, setThrottle] = useState("initialState");
+  const throttleValue = useThrottle(throttle, 500);
+
   return (
     <div>
       Example page.
@@ -83,6 +90,18 @@ const App: FC = () => {
         <div onClick={() => methods.reset()}>reset</div>
         <div onClick={() => methods.increment()}>increment</div>
         <div onClick={() => methods.incrementMulti(5)}>incrementMulti (+5)</div>
+      </div>
+      <div>
+        --------------------------- v1.7.0 ---------------------------
+        <div>{JSON.stringify(toggle)}</div>
+        <div onClick={setToggle}>toggle</div>
+        <div onClick={() => setToggle(true)}>toggle true</div>
+      </div>
+      <div>
+        --------------------------- v1.8.0 ---------------------------
+        <div>throttle value: {JSON.stringify(throttleValue)}</div>
+        <div>input: {JSON.stringify(throttle)}</div>
+        <input onChange={(e) => setThrottle(e.target.value)} />
       </div>
     </div>
   );
