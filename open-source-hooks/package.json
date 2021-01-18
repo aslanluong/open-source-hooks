@@ -1,6 +1,6 @@
 {
   "name": "open-source-hooks",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Open source hooks for React",
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
