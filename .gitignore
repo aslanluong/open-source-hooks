@@ -11,3 +11,6 @@ example/dist
 
 # yarn
 yarn-error.log
+
+# Coverage directory
+open-source-hooks/coverage
