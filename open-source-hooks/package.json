@@ -20,6 +20,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
+    "release": "npx semantic-release@17",
     "prepublishOnly": "yarn format",
     "prepare": "yarn build:prod"
   },

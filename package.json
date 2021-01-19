@@ -10,7 +10,8 @@
     "watch:hook": "yarn workspace open-source-hooks watch",
     "watch:example": "yarn workspace example develop",
     "build:hook": "yarn workspace open-source-hooks build:prod",
-    "publish:hook": "yarn workspace open-source-hooks publish"
+    "publish:hook": "yarn workspace open-source-hooks publish",
+    "release": "yarn workspace open-source-hooks release"
   },
   "author": "aslanluong",
   "license": "MIT",
