@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "develop": "yarn watch",
+    "test:ci": "yarn workspace open-source-hooks test",
     "watch": "concurrently -n Hook,Example \"yarn watch:hook\" \"yarn watch:example\"",
     "watch:hook": "yarn workspace open-source-hooks watch",
     "watch:example": "yarn workspace example develop",
