@@ -3,7 +3,10 @@ name: open-source-hooks
 on:
   push:
     branches:
-      - "test-and-cicd"
+      - "main"
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
   test:
@@ -24,7 +27,7 @@ jobs:
   publish:
     name: "Publish to NPM"
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
