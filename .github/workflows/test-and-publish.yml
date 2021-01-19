@@ -24,7 +24,7 @@ jobs:
   publish:
     name: "Publish to NPM"
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/test-and-cicd'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
