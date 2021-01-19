@@ -38,6 +38,6 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
       - run: yarn build:hook
-      - run: npx semantic-release@17
+      - run: yarn release
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
