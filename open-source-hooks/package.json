@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aslanluong/open-source-hooks"
+    "url": "https://github.com/aslanluong/open-source-hooks.git"
   },
   "author": "aslanluong",
   "license": "MIT",
