@@ -18,3 +18,5 @@ export { useMethods } from './use-methods';
 export { useToggle } from './use-toggle';
 // v1.8.0
 export { useThrottle } from './use-throttle';
+// v1.9.0
+export { useEffectOnce } from './use-effect-once';

@@ -9,6 +9,7 @@ import {
   useQuery,
   useToggle,
   useThrottle,
+  useEffectOnce,
 } from "./dist/index";
 
 const App: FC = () => {
@@ -58,6 +59,10 @@ const App: FC = () => {
 
   const [throttle, setThrottle] = useState("initialState");
   const throttleValue = useThrottle(throttle, 500);
+
+  useEffectOnce(() => {
+    console.log("useEffectOnce");
+  });
 
   return (
     <div>
