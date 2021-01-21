@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useMethods } from '../use-methods';
 import { FetchResult, FetchState, Endpoint, ObserverConfigs } from './types';
 
@@ -34,6 +34,7 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
     pagination,
     depParams,
     deps = [],
+    enabled = true,
     processData,
   } = parsedConfigs;
   const stringifyDeps = JSON.stringify(pagination) + JSON.stringify(depParams);
@@ -82,9 +83,9 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   const [reloadCount, setReloadCount] = useState<number>(0);
   const reload = () => setReloadCount(reloadCount + 1);
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const controller = useRef<AbortController>(new AbortController());
 
+  const processFetch = (signal: AbortSignal) => {
     if (endpoint) {
       if (depParams) {
         Object.keys(depParams).forEach(
@@ -104,7 +105,7 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
       parsedConfigs.onFetching && parsedConfigs.onFetching();
 
       fetch(endpoint + stringParams, {
-        /* headers: getHeaders(), */ signal: controller.signal,
+        /* headers: getHeaders(), */ signal: signal,
       })
         .then((res) => res.json())
         .then((data) => {
@@ -126,11 +127,27 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
           }
         });
     }
+  };
 
+  useEffect(() => {
     return (): void => {
-      controller.abort();
+      controller.current.abort();
     };
-  }, [endpoint, stringifyDeps, reloadCount, ...deps]);
+  }, []);
+
+  useEffect(() => {
+    if (enabled) {
+      controller.current = new AbortController();
+      processFetch(controller.current.signal);
+    }
+  }, [endpoint, stringifyDeps, enabled, ...deps]);
+
+  useEffect(() => {
+    if (reloadCount >= 1) {
+      controller.current = new AbortController();
+      processFetch(controller.current.signal);
+    }
+  }, [reloadCount]);
 
   return {
     status: fetchState.status,
