@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import { useEffectOnce } from '../index';
 
 export function useUnmount(
   callback: () => void | (() => void | undefined),
@@ -8,5 +9,5 @@ export function useUnmount(
   // newest callback will be invoked
   callbackRef.current = callback;
 
-  return useEffect(() => callbackRef.current, []);
+  return useEffectOnce(() => callbackRef.current);
 }
