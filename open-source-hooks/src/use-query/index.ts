@@ -130,12 +130,6 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
   };
 
   useEffect(() => {
-    return (): void => {
-      controller.current.abort();
-    };
-  }, []);
-
-  useEffect(() => {
     if (enabled) {
       controller.current = new AbortController();
       processFetch(controller.current.signal);
@@ -148,6 +142,12 @@ export function useQuery<TResponse, TData = TResponse, TError = unknown>(
       processFetch(controller.current.signal);
     }
   }, [reloadCount]);
+
+  useEffect(() => {
+    return (): void => {
+      controller.current.abort();
+    };
+  }, [reloadCount, endpoint, stringifyDeps, enabled, ...deps]);
 
   return {
     status: fetchState.status,
