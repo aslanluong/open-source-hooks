@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import {
   useHelloWorld,
@@ -10,6 +10,8 @@ import {
   useToggle,
   useThrottle,
   useEffectOnce,
+  useUnmount,
+  useBrowser,
 } from "./dist/index";
 
 const App: FC = () => {
@@ -63,6 +65,15 @@ const App: FC = () => {
   useEffectOnce(() => {
     console.log("useEffectOnce");
   });
+
+  useUnmount(() => {
+    console.log("useUnmount");
+  });
+
+  const { name, version, major } = useBrowser();
+  useEffect(() => {
+    console.log(name, version, major);
+  }, [name]);
 
   return (
     <div>

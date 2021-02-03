@@ -20,3 +20,7 @@ export { useToggle } from './use-toggle';
 export { useThrottle } from './use-throttle';
 // v1.9.0
 export { useEffectOnce } from './use-effect-once';
+// v1.10.0
+export { useUnmount } from './use-unmount';
+// v1.11.0
+export { useBrowser } from './use-browser';
