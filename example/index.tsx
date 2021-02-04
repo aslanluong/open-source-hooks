@@ -27,6 +27,12 @@ const App: FC = () => {
     "useLocalStorage"
   );
 
+  useEffect(() => {
+    setValue((prev) => prev + " set");
+    setValue((prev) => prev + " multi");
+    setValue((prev) => prev + " times");
+  }, []);
+
   const screen = useBreakpoints();
   const windowSize = useWindowSize();
 

@@ -32,15 +32,17 @@ export function useLocalStorage<T>(
   const set: Dispatch<SetStateAction<T | undefined>> = useCallback(
     (valOrFunc) => {
       try {
-        const newState =
-          typeof valOrFunc === 'function'
-            ? (valOrFunc as (state: T) => T)(state)
-            : valOrFunc;
-        if (typeof newState === 'undefined') return;
-        const value: string = serializer(newState);
+        setState((oldState) => {
+          const newState =
+            typeof valOrFunc === 'function'
+              ? (valOrFunc as (state: T) => T)(oldState)
+              : valOrFunc;
+          if (typeof newState === 'undefined') return oldState;
+          const value: string = serializer(newState);
 
-        localStorage.setItem(key, value);
-        setState(deserializer(value));
+          localStorage.setItem(key, value);
+          return deserializer(value);
+        });
       } catch {
         // If user is in private mode or has storage restriction
         // localStorage can throw.
