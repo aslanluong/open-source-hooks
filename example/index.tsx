@@ -72,9 +72,18 @@ const App: FC = () => {
     console.log("useEffectOnce");
   });
 
-  useUnmount(() => {
-    console.log("useUnmount");
-  });
+  const UnmountComponent = () => {
+    useUnmount(() => {
+      console.log("useUnmount");
+    });
+
+    // useEffect(() => {
+    //   return () => {
+    //     console.log("useUnmount");
+    //   };
+    // }, []);
+    return <div>unMountComponent</div>;
+  };
 
   const { name, version, major } = useBrowser();
   useEffect(() => {
@@ -124,6 +133,11 @@ const App: FC = () => {
         <div>throttle value: {JSON.stringify(throttleValue)}</div>
         <div>input: {JSON.stringify(throttle)}</div>
         <input onChange={(e) => setThrottle(e.target.value)} />
+      </div>
+      <div>
+        --------------------------- v1.10.0 ---------------------------
+        {toggle && <UnmountComponent />}
+        <div onClick={setToggle}>toggle</div>
       </div>
     </div>
   );
