@@ -30,6 +30,7 @@ pnpm add open-source-hooks
 - **Lifecycles**
   - [useEffectOnce](#useeffectonce)
   - [useUnmount](#useunmount)
+  - [useUpdateEffect](#useupdateeffect)
 - **State**
   - [useMethods](#usemethods)
   - [useToggle](#usetoggle)
@@ -196,6 +197,17 @@ import { useUnmount } from "open-source-hooks";
 useUnmount(() => {
   console.log("useUnmount");
   // cannot run until component unmounted
+});
+```
+**↑ back to:** [Usage](#usage)
+
+### useUpdateEffect
+```ts
+import { useUpdateEffect } from "open-source-hooks";
+
+useUpdateEffect(() => {
+  console.log("useUpdateEffect");
+  // run on rerender only
 });
 ```
 **↑ back to:** [Usage](#usage)
