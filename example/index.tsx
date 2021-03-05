@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import {
-  useHelloWorld,
   useLocalStorage,
   useWindowSize,
   useBreakpoints,
@@ -15,7 +14,6 @@ import {
 } from "./dist/index";
 
 const App: FC = () => {
-  const message = useHelloWorld();
   useQuery("https://api.github.com/users/octocat", {
     onSuccess: (res) => {
       console.log(res);
@@ -93,10 +91,7 @@ const App: FC = () => {
   return (
     <div>
       Example page.
-      <div>
-        --------------------------- v1.0.0 ---------------------------
-        <div>{message}</div>
-      </div>
+      <div>--------------------------- v1.0.0 ---------------------------</div>
       <div>
         --------------------------- v1.1.0 ---------------------------
         <div>useDebounce</div>
