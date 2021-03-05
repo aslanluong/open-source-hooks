@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
 import {
   useLocalStorage,
@@ -11,6 +11,7 @@ import {
   useEffectOnce,
   useUnmount,
   useBrowser,
+  useUpdateEffect,
 } from "./dist/index";
 
 const App: FC = () => {
@@ -87,6 +88,17 @@ const App: FC = () => {
   useEffect(() => {
     console.log(name, version, major);
   }, [name]);
+
+  const countEffect = useRef(0);
+
+  useEffect(() => {
+    countEffect.current = countEffect.current + 1;
+    console.log("useEffect", countEffect.current);
+  });
+
+  useUpdateEffect(() => {
+    console.log("useUpdateEffect", countEffect.current);
+  });
 
   return (
     <div>

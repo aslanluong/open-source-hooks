@@ -23,3 +23,5 @@ export { useEffectOnce } from './use-effect-once';
 export { useUnmount } from './use-unmount';
 // v1.11.0
 export { useBrowser } from './use-browser';
+// v2.1.0
+export { useUpdateEffect } from './use-update-effect';
