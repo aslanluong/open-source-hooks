@@ -9,7 +9,7 @@
     "types"
   ],
   "scripts": {
-    "test": "jest --maxWorkers=2",
+    "test": "jest --maxWorkers=2 --env=jsdom",
     "test:coverage": "jest --coverage",
     "clean:coverage": "rimraf coverage",
     "clean:prod": "rimraf lib && rimraf types",
