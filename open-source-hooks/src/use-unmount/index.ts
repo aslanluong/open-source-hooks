@@ -1,9 +1,7 @@
-import { useRef } from 'react';
+import { useRef, EffectCallback } from 'react';
 import { useEffectOnce } from '../index';
 
-export function useUnmount(
-  callback: () => void | (() => void | undefined),
-): void {
+export function useUnmount(callback: ReturnType<EffectCallback>): void {
   const callbackRef = useRef(callback);
 
   // newest callback will be invoked
