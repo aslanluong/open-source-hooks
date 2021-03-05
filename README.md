@@ -17,7 +17,7 @@ yarn add open-source-hooks
 pnpm add open-source-hooks
 ```
 
-## Usage
+## Hooks
 
 - **Sensors**
   - [useBreakPoints](#usebreakpoints)
@@ -37,7 +37,7 @@ pnpm add open-source-hooks
 - **Http-request**
   - [useQuery](#usequery)
   
-## Hooks
+## Usage
 
 ### useBreakpoints
 ```ts
@@ -49,7 +49,7 @@ useEffect(() => {
   console.log(`Your screen size: ${screenSize}`);
 });
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useBrowser
 ```ts
@@ -61,7 +61,7 @@ useEffect(() => {
   console.log(`Browser name: ${name}, major version: ${major}`);
 }, []);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useDebounce
 ```ts
@@ -75,7 +75,7 @@ useEffect(() => {
   // handle search here
 }, [debouncedValue]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useEffectOnce
 ```ts
@@ -85,7 +85,7 @@ useEffectOnce(() => {
   console.log(`This line only runs once");
 });
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useLocalStorage
 ```ts
@@ -101,7 +101,7 @@ useEffect(() => {
   console.log(`Current value of 'name': ${value}`);
 }, [value]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useMethods
 ```ts
@@ -133,7 +133,7 @@ useEffect(() => {
   console.log(`Current state value: ${state}`);
 }, [state]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useQuery
 ```ts
@@ -152,7 +152,7 @@ useEffect(() => {
   }
 }, [data]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useThrottle
 ```ts
@@ -171,7 +171,7 @@ useEffect(() => {
   console.log(`Throttle value changed to: ${throttleValue}`);
 }, [throttleValue]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useToggle
 ```ts
@@ -188,7 +188,7 @@ useEffect(() => {
   // toggle must be true on second log
 }, [toggle]);
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useUnmount
 ```ts
@@ -199,7 +199,7 @@ useUnmount(() => {
   // cannot run until component unmounted
 });
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useUpdateEffect
 ```ts
@@ -210,7 +210,7 @@ useUpdateEffect(() => {
   // run on rerender only
 });
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ### useWindowSize
 ```ts
@@ -222,7 +222,7 @@ useEffect(() => {
   console.log(`Window width: ${width}, window height: ${height}`);
 });
 ```
-**↑ back to:** [Usage](#usage)
+**↑ back to:** [Hooks](#hooks)
 
 ## Example
 See [./example](./example)
