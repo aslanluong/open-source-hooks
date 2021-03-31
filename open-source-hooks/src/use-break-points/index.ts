@@ -3,7 +3,7 @@ import { BreakpointName, Breakpoints } from './types';
 
 class BreakpointsConfig {
   // Inspired by tailwindcss
-  static breakpoints: Breakpoints = {
+  static breakpoints: Breakpoints<BreakpointName> = {
     '2xl': 1536,
     xl: 1280,
     lg: 1024,
@@ -11,11 +11,11 @@ class BreakpointsConfig {
     sm: 640,
   };
 
-  static setBreakpoints(breakpoints: Breakpoints): void {
+  static setBreakpoints<T extends BreakpointName>(breakpoints: Breakpoints<T>): void {
     this.breakpoints = breakpoints;
   }
 
-  static getBreakpoints(): Breakpoints {
+  static getBreakpoints<T extends BreakpointName>(): Breakpoints<T> {
     return this.breakpoints;
   }
 }
@@ -23,19 +23,19 @@ class BreakpointsConfig {
 /**
  * Breakpoint format is <name (string | number): minWidth (number)>
  */
-export function setDefaultBreakpoints(breakpoints: Breakpoints): void {
+export function setDefaultBreakpoints<T extends BreakpointName>(breakpoints: Breakpoints<T>): void {
   BreakpointsConfig.setBreakpoints(breakpoints);
 }
 
-export function useBreakpoints(): BreakpointName {
-  return useBaseBreakpoints();
+export function useBreakpoints<T extends BreakpointName>(): T {
+  return useBaseBreakpoints<T>();
 }
 
-export function useCustomBreakpoints(breakpoints: Breakpoints): BreakpointName {
+export function useCustomBreakpoints<T extends BreakpointName>(breakpoints: Breakpoints<T>): T {
   return useBaseBreakpoints(breakpoints);
 }
 
-function useBaseBreakpoints(customBreakpoints?: Breakpoints): BreakpointName {
+function useBaseBreakpoints<T extends BreakpointName>(customBreakpoints?: Breakpoints<T>): T {
   const [screen, setScreen] = useState(0);
   const breakpoints = customBreakpoints || BreakpointsConfig.getBreakpoints();
 
@@ -51,7 +51,7 @@ function useBaseBreakpoints(customBreakpoints?: Breakpoints): BreakpointName {
   }, []);
 
   const sortedBreakpoints = useMemo(
-    () => Object.entries(breakpoints).sort((a, b) => (a[1] >= b[1] ? 1 : -1)),
+    () => (Object.entries(breakpoints) as [T, number][]).sort((a, b) => (a[1] >= b[1] ? 1 : -1)),
     [breakpoints],
   );
 
