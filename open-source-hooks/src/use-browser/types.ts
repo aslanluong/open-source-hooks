@@ -1,6 +1,6 @@
-export interface BrowserReturn {
+export interface Browser {
   name: string;
   version: string;
   major: number;
-  setUA: (ua: string) => void;
+  setUA: (UA: string) => void;
 }

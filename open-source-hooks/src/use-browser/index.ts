@@ -1,36 +1,12 @@
 import { useEffect } from 'react';
 import { useMethods } from '../index';
-import { BrowserReturn } from './types';
+import { Browser } from './types';
 import { UAParser } from 'ua-parser-js';
 
 const uaParser = new UAParser();
 const { name, version } = uaParser.getBrowser();
 
-export function useBrowser(): BrowserReturn {
-  const initialState = {
-    setUACount: 0,
-    name,
-    version,
-    major: Number(version ? version.split('.')[0] : 0) ?? 0,
-  };
-
-  function createMethods(state: typeof initialState) {
-    return {
-      setName(name: string) {
-        return { ...state, name };
-      },
-      setVersion(version: string) {
-        return { ...state, version };
-      },
-      setMajor(major: number) {
-        return { ...state, major };
-      },
-      increaseSetUACount() {
-        return { ...state, setUACount: state.setUACount + 1 };
-      },
-    };
-  }
-
+export function useBrowser(): Browser {
   const [browser, browserMethods] = useMethods<
     ReturnType<typeof createMethods>,
     typeof initialState
@@ -45,9 +21,7 @@ export function useBrowser(): BrowserReturn {
     const { name: nextName, version: nextVersion } = uaParser.getBrowser();
     browserMethods.setName(nextName);
     browserMethods.setVersion(nextVersion);
-    browserMethods.setMajor(
-      Number(nextVersion ? nextVersion.split('.')[0] : 0) || 0,
-    );
+    browserMethods.setMajor(getMajorVersion(version));
   }, [browser.setUACount]);
 
   return {
@@ -57,3 +31,31 @@ export function useBrowser(): BrowserReturn {
     setUA,
   };
 }
+
+const getMajorVersion = (version: string) => {
+  return Number(version ? version.split('.')[0] : 0) || 0;
+};
+
+const initialState = {
+  setUACount: 0,
+  name,
+  version,
+  major: getMajorVersion(version),
+};
+
+const createMethods = (state: typeof initialState) => {
+  return {
+    setName(name: string) {
+      return { ...state, name };
+    },
+    setVersion(version: string) {
+      return { ...state, version };
+    },
+    setMajor(major: number) {
+      return { ...state, major };
+    },
+    increaseSetUACount() {
+      return { ...state, setUACount: state.setUACount + 1 };
+    },
+  };
+};
